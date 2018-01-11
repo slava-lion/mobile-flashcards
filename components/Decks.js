@@ -1,16 +1,24 @@
 import React from 'react'
-import { View, Text, StyleSheet, Platform, TouchableHighlight } from 'react-native'
+import { connect } from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight } from 'react-native'
 import { fetchAllCards } from '../utils/AsyncStorageApi.js'
+import { receiveDecks } from '../actions/index.js'
 import { gray, white, black } from '../utils/colors'
 
-export default class Decks extends React.Component {
+export class Decks extends React.Component {
 
   state = {
     decks: '',
   }
 
   componentDidMount() {
-    fetchAllCards().then((data) => this.setState(() => ({ decks: data, })))
+    fetchAllCards().then(
+     (data) => {
+       let recievedData = data
+       this.setState(() => ({ decks: recievedData, }))
+       this.props.receiveDecks(recievedData)
+     }
+    )
   }
 
   showDeckDetailView = (key) => {
@@ -18,22 +26,20 @@ export default class Decks extends React.Component {
   }
 
   render () {
+    let allDecks = this.props.decks
 
     return (
-      <View>
-        <Text>
-          here will be decks {JSON.stringify(this.state.decks)}
-        </Text>
-        {Object.keys(this.state.decks).map((key) => {
-          const currentDeck = this.state.decks[key]
+      <ScrollView>
+        {Object.keys(allDecks).map((key) => {
+          const currentDeck = allDecks[key]
 
           return (
             <TouchableHighlight key={key} style={styles.deckLine} underlayColor={gray} onPress={() => (this.showDeckDetailView(key))}>
-              <View>
-                <Text>
+              <View style={{flex : 1, justifyContent: 'center'}}>
+                <Text style={{flex : 1, justifyContent: 'center'}}>
                   {currentDeck.title}
                 </Text>
-                <Text>
+                <Text style={{flex : 1, justifyContent: 'center'}}>
                   {currentDeck.questions.length} cards
                 </Text>
             </View>
@@ -41,7 +47,7 @@ export default class Decks extends React.Component {
           )
         })}
 
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -58,3 +64,17 @@ const styles = StyleSheet.create({
   },
 
 })
+
+function mapStateToProps (state) {
+  return {
+    decks: state,
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    receiveDecks: (data) => dispatch(receiveDecks(data))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Decks)

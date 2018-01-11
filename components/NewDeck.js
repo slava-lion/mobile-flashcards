@@ -1,7 +1,9 @@
 import React from 'react'
-import { ScrollView, Text, TextInput, StyleSheet, Platform, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, TextInput, KeyboardAvoidingView, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import { purple, white } from '../utils/colors'
 import { connect } from 'react-redux'
+import { submitDeck } from '../utils/AsyncStorageApi.js'
+import { addDeck } from '../actions/index.js'
 
 export class AddNewDeck extends React.Component {
   state = {
@@ -9,7 +11,16 @@ export class AddNewDeck extends React.Component {
   }
 
   onPress = () => {
-
+    let { navigateToDecks, addDeck } = this.props
+    let deckTitle = this.state.deckTitle
+    let key = deckTitle.trim().replace(/\s/g, '')
+    let deck = {}
+    deck['title'] = deckTitle
+    deck['questions'] = []
+    submitDeck(deck, key)
+    addDeck(deck, key)
+    this.setState({ deckTitle: null, })
+    navigateToDecks()
   }
 
   render () {
@@ -17,13 +28,12 @@ export class AddNewDeck extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-        {this.props.decks}
         <Text style={[styles.center, {fontSize: 20, }]}>
           Type the title of your new decks
         </Text>
         <TextInput
           style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 30, }}
-          onChangeText={(text) => this.setState({text})}
+          onChangeText={(text) => this.setState({ deckTitle: text, })}
           value={this.state.deckTitle}
           placeholder={placeholder}
         />
@@ -41,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: white
+    backgroundColor: white,
   },
   row: {
     flexDirection: 'row',
@@ -88,9 +98,10 @@ function mapStateToProps (state) {
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch, { navigation }) {
   return {
-    remove: (deck) => dispatch(addDeck(deck)),
+    addDeck: (deck, key) => dispatch(addDeck(deck, key)),
+    navigateToDecks: () => navigation.navigate('Decks'),
   }
 }
 

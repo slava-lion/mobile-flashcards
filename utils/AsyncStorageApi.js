@@ -8,8 +8,12 @@ export function fetchAllCards () {
     .then(formatCardsData)
 }
 
-export function submitDeck(deck) {
+export function submitDeck(deck ,key) {
   return AsyncStorage.mergeItem(CARDS_STORAGE_KEY, JSON.stringify({
-    [deck.key]: deck
+    [key]: deck
   }))
+}
+
+export function clearStorage() {
+  AsyncStorage.clear()
 }
