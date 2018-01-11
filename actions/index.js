@@ -14,6 +14,13 @@ export function receiveDecks(decks) {
   }
 }
 
+export function addDeck(deck) {
+  return {
+    type: ADD_DECK,
+    deck,
+  }
+}
+
 export function getCardsForDeck(deck) {
   return {
     type: GET_CARDS_FOR_DECK,
