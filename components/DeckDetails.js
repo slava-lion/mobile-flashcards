@@ -1,0 +1,76 @@
+import React from 'react'
+import { connect } from 'react-redux'
+import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight, TouchableOpacity } from 'react-native'
+import { fetchAllCards } from '../utils/AsyncStorageApi.js'
+import { addCardToDeck } from '../actions/index.js'
+import { gray, white, black, purple } from '../utils/colors'
+
+class DeckDetails extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.state.params.deckId,
+    }
+  }
+
+  addNewCard = () => {
+    alert('addNewCard')
+  }
+
+  startQuiz = () => {
+    alert('startQuiz')
+  }
+
+  render() {
+    const currentDeck = this.props.deck
+
+    return (
+      <View style={styles.container}>
+        <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+          {currentDeck.title}
+        </Text>
+        <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+          {currentDeck.questions.length} cards
+        </Text>
+
+        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.addNewCard}>
+          <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Add Card</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
+          <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: white,
+    padding: 15,
+    justifyContent: 'center',
+  },
+})
+
+function mapStateToProps (state, { navigation }) {
+  const { deckId } = navigation.state.params
+
+  return {
+    deckId,
+    deck: state[deckId],
+  }
+}
+
+function mapDispatchToProps (dispatch, { navigation }) {
+  const { deckId } = navigation.state.params
+
+  return {
+    addCardToDeck: (card) => dispatch(addCardToDeck(deckId, card)),
+    goBack: () => navigation.goBack(),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DeckDetails)

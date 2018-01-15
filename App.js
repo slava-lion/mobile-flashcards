@@ -9,6 +9,7 @@ import { purple, white } from './utils/colors'
 import reducer from './reducers/index'
 import Decks from './components/Decks'
 import AddNewDeck from './components/NewDeck'
+import DeckDetails from './components/DeckDetails'
 
 function CustomStatusBar ({backgroundColor, ...props}) {
   return (
@@ -53,13 +54,30 @@ const Tabs = TabNavigator({
   }
 })
 
+const MainNavigator = StackNavigator({
+  Home: {
+    screen: Tabs,
+  },
+  DeckDetails: {
+    screen: DeckDetails,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  }
+}, {
+  headerMode: Platform.OS === 'ios' ? 'float' : 'screen',
+})
+
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
           <CustomStatusBar backgroundColor={'#757575'} barStyle="light-content" />
-          <Tabs />
+          <MainNavigator />
         </View>
       </Provider>
     );

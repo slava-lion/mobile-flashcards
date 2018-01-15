@@ -22,7 +22,10 @@ export class Decks extends React.Component {
   }
 
   showDeckDetailView = (key) => {
-    alert(key)
+    this.props.navigation.navigate(
+      'DeckDetails',
+      { deckId: key }
+    )
   }
 
   render () {
@@ -32,6 +35,7 @@ export class Decks extends React.Component {
       <ScrollView>
         {Object.keys(allDecks).map((key) => {
           const currentDeck = allDecks[key]
+          console.log(JSON.stringify(currentDeck))
 
           return (
             <TouchableHighlight key={key} style={styles.deckLine} underlayColor={gray} onPress={() => (this.showDeckDetailView(key))}>
@@ -42,7 +46,7 @@ export class Decks extends React.Component {
                 <Text style={{flex : 1, justifyContent: 'center'}}>
                   {currentDeck.questions.length} cards
                 </Text>
-            </View>
+              </View>
             </TouchableHighlight>
           )
         })}
@@ -65,13 +69,13 @@ const styles = StyleSheet.create({
 
 })
 
-function mapStateToProps (state) {
+function mapStateToProps (state, { navigation }) {
   return {
     decks: state,
   }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps (dispatch, { navigation }) {
   return {
     receiveDecks: (data) => dispatch(receiveDecks(data))
   }

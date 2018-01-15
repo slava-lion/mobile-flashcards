@@ -12,6 +12,12 @@ function reducer(state = {}, action) {
         ...state,
         [action.key]: action.deck
       }
+    case ADD_CARD: {
+      return {
+        ...state,
+        [action.deckId]: [...state[action.deckId], action.card]
+      }
+    }
     default :
       return state
   }
