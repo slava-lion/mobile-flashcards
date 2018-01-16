@@ -33,6 +33,9 @@ export class Decks extends React.Component {
 
     return (
       <ScrollView>
+        <Text style={{flex : 1, justifyContent: 'center'}}>
+          {JSON.stringify(this.state.decks)}
+        </Text>
         {Object.keys(allDecks).map((key) => {
           const currentDeck = allDecks[key]
           console.log(JSON.stringify(currentDeck))

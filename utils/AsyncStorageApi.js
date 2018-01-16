@@ -8,14 +8,20 @@ export function fetchAllCards () {
     .then(formatCardsData)
 }
 
-export function submitDeck(deck ,key) {
+export function submitDeck(deck, key) {
   return AsyncStorage.mergeItem(CARDS_STORAGE_KEY, JSON.stringify({
     [key]: deck
   }))
 }
 
 export function submitNewCard(deckId, card) {
-
+  AsyncStorage.getItem(CARDS_STORAGE_KEY)
+    .then((data) => {
+      let storage = JSON.parse(data)
+      let modifiedDeck = storage[deckId]
+      modifiedDeck.questions.push(card)
+      submitDeck(modifiedDeck, deckId)
+    })
 }
 
 export function clearStorage() {

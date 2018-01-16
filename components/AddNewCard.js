@@ -8,7 +8,7 @@ import { gray, white, black, purple } from '../utils/colors'
 class AddNewCard extends React.Component {
   navigationOptions = ({ navigation }) => {
     return {
-      title: 'Add card to ' + this.props.deckId + ' deck',
+      title: 'Add card to ' + navigation.state.params.deckId + ' deck',
     }
   }
 
@@ -22,8 +22,8 @@ class AddNewCard extends React.Component {
     let card = {}
     card['question'] = this.state.cardQuestion
     card['answer'] = this.state.cardAnswer
-    submitNewCard(deckId, card)
     addCardToDeck(deckId, card)
+    submitNewCard(deckId, card)
     this.setState({ cardQuestion: null, cardAnswer: null, })
     goBack()
   }
