@@ -13,7 +13,10 @@ class DeckDetails extends React.Component {
   }
 
   addNewCard = () => {
-    alert('addNewCard')
+    this.props.navigation.navigate(
+      'AddNewCard',
+      { deckId: this.props.deckId }
+    )
   }
 
   startQuiz = () => {
@@ -65,7 +68,6 @@ function mapDispatchToProps (dispatch, { navigation }) {
   const { deckId } = navigation.state.params
 
   return {
-    addCardToDeck: (card) => dispatch(addCardToDeck(deckId, card)),
     goBack: () => navigation.goBack(),
   }
 }

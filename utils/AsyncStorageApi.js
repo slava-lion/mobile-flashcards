@@ -14,6 +14,10 @@ export function submitDeck(deck ,key) {
   }))
 }
 
+export function submitNewCard(deckId, card) {
+
+}
+
 export function clearStorage() {
   AsyncStorage.clear()
 }

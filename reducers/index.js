@@ -13,10 +13,9 @@ function reducer(state = {}, action) {
         [action.key]: action.deck
       }
     case ADD_CARD: {
-      return {
-        ...state,
-        [action.deckId]: [...state[action.deckId], action.card]
-      }
+      let newState = {...state};
+      newState[action.deckId].questions.push(action.card);
+      return newState
     }
     default :
       return state

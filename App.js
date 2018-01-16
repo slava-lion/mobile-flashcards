@@ -10,6 +10,7 @@ import reducer from './reducers/index'
 import Decks from './components/Decks'
 import AddNewDeck from './components/NewDeck'
 import DeckDetails from './components/DeckDetails'
+import AddNewCard from './components/AddNewCard'
 
 function CustomStatusBar ({backgroundColor, ...props}) {
   return (
@@ -60,6 +61,15 @@ const MainNavigator = StackNavigator({
   },
   DeckDetails: {
     screen: DeckDetails,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple,
+      }
+    }
+  },
+  AddNewCard: {
+    screen: AddNewCard,
     navigationOptions: {
       headerTintColor: white,
       headerStyle: {
