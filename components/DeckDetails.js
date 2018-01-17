@@ -20,7 +20,10 @@ class DeckDetails extends React.Component {
   }
 
   startQuiz = () => {
-    alert('startQuiz')
+    this.props.navigation.navigate(
+      'Quiz',
+      { deckId: this.props.deckId }
+    )
   }
 
   render() {
@@ -38,9 +41,16 @@ class DeckDetails extends React.Component {
         <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.addNewCard}>
           <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Add Card</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
-          <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
-        </TouchableOpacity>
+        {currentDeck.questions.length > 0 &&
+          <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
+            <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
+          </TouchableOpacity>
+        }
+        {currentDeck.questions.length === 0 &&
+          <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+            Quiz is not available, please add some cards
+          </Text>
+        }
       </View>
     )
   }
