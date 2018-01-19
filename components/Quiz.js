@@ -10,14 +10,20 @@ class Quiz extends React.Component {
     questions: null,
     questionNumber: 1,
     visibleSide: 'front',  // front - question , back - answer
+    finished: false,
   }
 
   increaseScore = () => {
-    alert('correct')
+    this.setState((state) => ({ score: (state.score + 1), }))
+    this.nextQuestion()
   }
 
   nextQuestion = () => {
-    alert('moving to next')
+    if(this.state.questionNumber < this.props.questions.length) {
+      this.setState((state) => ({ questionNumber: (state.questionNumber + 1), }))
+    } else {
+      this.setState((state) => ({ finished: true, }))
+    }
   }
 
   flipCard = () => {
@@ -30,51 +36,66 @@ class Quiz extends React.Component {
 
   render() {
     const { visibleSide, questionNumber } = this.state
-    const question = this.props.questions[questionNumber]
+    const question = this.props.questions[questionNumber-1]
 
     return (
       <View style={styles.container}>
-        <View>
-          <Text style={{justifyContent: 'center'}}>
-            {JSON.stringify(question)},{JSON.stringify(visibleSide)}
-          </Text>
-        </View>
-
-        {visibleSide === 'front' &&
+        {this.state.finished &&
           <View style={styles.card}>
             <Text style={styles.cardText}>
-              {question.question}
+              Your score {this.state.score} / {this.props.questions.length}
             </Text>
-            <TouchableHighlight onPress={this.flipCard}>
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={{ justifyContent: 'center', color: red }}>
-                  Answer
-                </Text>
-              </View>
-            </TouchableHighlight>
           </View>
         }
-        {visibleSide === 'back' &&
-          <View style={styles.card}>
-            <Text style={styles.cardText}>
-              {question.answer}
-            </Text>
-            <TouchableHighlight onPress={this.flipCard}>
-              <View style={{ justifyContent: 'center' }}>
-                <Text style={{ justifyContent: 'center', color: red }}>
-                  Question
-                </Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-        }
+        {!this.state.finished &&
+          <View style={styles.container}>
+            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between'}}>
+              <Text style={{justifyContent: 'flex-start'}}>
+                {questionNumber} / {this.props.questions.length}
+              </Text>
+              <Text style={{justifyContent: 'flex-end'}}>
+                score {this.state.score} / {this.props.questions.length}
+              </Text>
+            </View>
+            <View style={{flex: 10}}>
+              {visibleSide === 'front' &&
+                <View style={styles.card}>
+                  <Text style={styles.cardText}>
+                    {question.question}
+                  </Text>
+                  <TouchableHighlight onPress={this.flipCard}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={{ justifyContent: 'center', color: red }}>
+                        Answer
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              }
+              {visibleSide === 'back' &&
+                <View style={styles.card}>
+                  <Text style={styles.cardText}>
+                    {question.answer}
+                  </Text>
+                  <TouchableHighlight onPress={this.flipCard}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Text style={{ justifyContent: 'center', color: red }}>
+                        Question
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              }
 
-        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: green }} onPress={this.increaseScore}>
-          <Text style={{margin: 20, textAlign: 'center', color: white,}}>Correct</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: red }} onPress={this.nextQuestion}>
-          <Text style={{margin: 20, textAlign: 'center', color: white }}>Incorrect</Text>
-        </TouchableOpacity>
+              <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: green }} onPress={this.increaseScore}>
+                <Text style={{margin: 20, textAlign: 'center', color: white,}}>Correct</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: red }} onPress={this.nextQuestion}>
+                <Text style={{margin: 20, textAlign: 'center', color: white }}>Incorrect</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        }
       </View>
     )
   }
@@ -85,7 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: white,
     padding: 15,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   card: {
     justifyContent: 'center',
