@@ -22,7 +22,7 @@ class AddNewCard extends React.Component {
     let card = {}
     card['question'] = this.state.cardQuestion
     card['answer'] = this.state.cardAnswer
-    addCardToDeck(deckId, card)
+    addCardToDeck(card)
     submitNewCard(deckId, card)
     this.setState({ cardQuestion: null, cardAnswer: null, })
     goBack()

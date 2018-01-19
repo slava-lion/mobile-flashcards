@@ -7,7 +7,6 @@ class Quiz extends React.Component {
 
   state = {
     score: 0,
-    questions: null,
     questionNumber: 1,
     visibleSide: 'front',  // front - question , back - answer
     finished: false,
