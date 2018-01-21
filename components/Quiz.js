@@ -33,6 +33,14 @@ class Quiz extends React.Component {
     }
   }
 
+  restartQuiz = () => {
+    this.setState(() => ({
+      score: 0,
+      questionNumber: 1,
+      visibleSide: 'front',  // front - question , back - answer
+      finished: false, }))
+  }
+
   render() {
     const { visibleSide, questionNumber } = this.state
     const question = this.props.questions[questionNumber-1]
@@ -44,6 +52,13 @@ class Quiz extends React.Component {
             <Text style={styles.cardText}>
               Your score {this.state.score} / {this.props.questions.length}
             </Text>
+
+            <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.restartQuiz}>
+              <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Restart Quiz</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.props.goBack}>
+              <Text style={{margin: 20, textAlign: 'center', color: white }}>Back to Deck</Text>
+            </TouchableOpacity>
           </View>
         }
         {!this.state.finished &&
