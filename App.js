@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, KeyboardAvoidingView, ScrollView, Platform, Sta
 import { TabNavigator, StackNavigator } from 'react-navigation'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { Constants } from 'expo'
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { purple, white } from './utils/colors'
 import reducer from './reducers/index'
@@ -13,14 +12,6 @@ import DeckDetails from './components/DeckDetails'
 import AddNewCard from './components/AddNewCard'
 import Quiz from './components/Quiz'
 import { setLocalNotification } from './utils/AsyncStorageApi'
-
-function CustomStatusBar ({backgroundColor, ...props}) {
-  return (
-    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
-    </View>
-  )
-}
 
 const Tabs = TabNavigator({
   Decks: {
@@ -103,7 +94,7 @@ export default class App extends React.Component {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex: 1}}>
-          <CustomStatusBar backgroundColor={'#757575'} barStyle="light-content" />
+
           <MainNavigator />
         </View>
       </Provider>

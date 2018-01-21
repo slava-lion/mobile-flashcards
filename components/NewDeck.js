@@ -1,9 +1,10 @@
 import React from 'react'
-import { ScrollView, Text, TextInput, KeyboardAvoidingView, StyleSheet, Platform, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Platform, TouchableOpacity } from 'react-native'
 import { purple, white } from '../utils/colors'
 import { connect } from 'react-redux'
 import { submitDeck } from '../utils/AsyncStorageApi.js'
 import { addDeck } from '../actions/index.js'
+import { CustomStatusBar } from '../utils/helpers'
 
 export class AddNewDeck extends React.Component {
   state = {
@@ -34,22 +35,25 @@ export class AddNewDeck extends React.Component {
     const placeholder = 'enter the title here'
 
     return (
-      <ScrollView style={styles.container}>
-        <Text style={[styles.center, {fontSize: 20, }]}>
-          Type the title of your new decks
-        </Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 30, }}
-          onChangeText={(text) => this.setState({ deckTitle: text, })}
-          value={this.state.deckTitle}
-          placeholder={placeholder}
-        />
-        <TouchableOpacity
-          style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
-          onPress={this.onPress}>
-            <Text style={styles.submitBtnText}>CREATE</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      <View style={{flex: 1,}}>
+        <CustomStatusBar backgroundColor={'#757575'} barStyle="light-content" />
+        <ScrollView style={styles.container}>
+          <Text style={[styles.center, {fontSize: 20, }]}>
+            Type the title of your new decks
+          </Text>
+          <TextInput
+            style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 30, }}
+            onChangeText={(text) => this.setState({ deckTitle: text, })}
+            value={this.state.deckTitle}
+            placeholder={placeholder}
+          />
+          <TouchableOpacity
+            style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
+            onPress={this.onPress}>
+              <Text style={styles.submitBtnText}>CREATE</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
     )
   }
 }

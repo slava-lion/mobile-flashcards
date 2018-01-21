@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight, StatusBar } from 'react-native'
 import { fetchAllCards } from '../utils/AsyncStorageApi.js'
 import { receiveDecks } from '../actions/index.js'
 import { gray, white, black } from '../utils/colors'
+import { CustomStatusBar } from '../utils/helpers'
 
 export class Decks extends React.Component {
 
@@ -33,6 +34,7 @@ export class Decks extends React.Component {
 
     return (
       <ScrollView>
+        <CustomStatusBar backgroundColor={'#757575'} barStyle="light-content" />
         {Object.keys(allDecks).map((key) => {
           const currentDeck = allDecks[key]
 
