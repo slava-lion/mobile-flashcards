@@ -35,7 +35,6 @@ export class Decks extends React.Component {
       <ScrollView>
         {Object.keys(allDecks).map((key) => {
           const currentDeck = allDecks[key]
-          console.log(JSON.stringify(currentDeck))
 
           return (
             <TouchableHighlight key={key} style={styles.deckLine} underlayColor={gray} onPress={() => (this.showDeckDetailView(key))}>
