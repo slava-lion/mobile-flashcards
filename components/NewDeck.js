@@ -20,7 +20,14 @@ export class AddNewDeck extends React.Component {
     submitDeck(deck, key)
     addDeck(deck, key)
     this.setState({ deckTitle: null, })
-    navigateToDecks()
+    this.navigateToDeck(key)
+  }
+
+  navigateToDeck = (deckId) => {
+    this.props.navigation.navigate(
+      'DeckDetails',
+      { deckId: deckId }
+    )
   }
 
   render () {
