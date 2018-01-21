@@ -2,7 +2,7 @@ import React from 'react'
 
 export function formatCardsData (results) {
   return results === null
-    ? setDummyData()
+    ? null
     : JSON.parse(results)
 }
 
