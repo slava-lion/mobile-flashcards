@@ -33,3 +33,19 @@ export function setDummyData() {
   }
   return dummyData
 }
+
+function createNotification () {
+  return {
+    title: 'It is time for training!',
+    body: 'Please completed at least one quiz',
+    ios: {
+      sound: true,
+    },
+    android: {
+      sound: true,
+      priority: 'high',
+      sticky: false,
+      vibrate: true,
+    }
+  }
+}

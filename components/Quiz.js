@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight, TouchableOpacity } from 'react-native'
 import { gray, white, black, purple, red, green } from '../utils/colors'
+import { setLocalNotification, clearLocalNotification } from '../utils/AsyncStorageApi'
 
 class Quiz extends React.Component {
 
@@ -22,6 +23,7 @@ class Quiz extends React.Component {
       this.setState((state) => ({ questionNumber: (state.questionNumber + 1), }))
     } else {
       this.setState((state) => ({ finished: true, }))
+      clearLocalNotification().then(setLocalNotification)
     }
   }
 
