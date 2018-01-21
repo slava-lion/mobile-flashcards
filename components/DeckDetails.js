@@ -12,11 +12,26 @@ class DeckDetails extends React.Component {
     }
   }
 
+  state = {
+    deck: null,
+  }
+
+  componentWillMount = () => {
+    this.setState({ deck: this.props.deck, })
+  }
+
   addNewCard = () => {
     this.props.navigation.navigate(
-      'AddNewCard',
-      { deckId: this.props.deckId }
+      'AddNewCard', {
+        deckId: this.props.deckId,
+        onGoBack: (card) => this.refresh(card),
+      }
     )
+  }
+
+  refresh = (card) => {
+    // for trigerring re-render after go-back: show new card´s amount
+    this.setState(() => ((state) => ({ deck: state.deck.questions.push(card), })))
   }
 
   startQuiz = () => {
@@ -27,32 +42,41 @@ class DeckDetails extends React.Component {
   }
 
   render() {
-    const currentDeck = this.props.deck
+    const currentDeck = this.state.deck
 
-    return (
-      <View style={styles.container}>
-        <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
-          {currentDeck.title}
-        </Text>
-        <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
-          {currentDeck.questions.length} cards
-        </Text>
+      return (
+        <View style={styles.container}>
+          { currentDeck !== null &&
+            <View style={styles.container}>
+            <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+              {currentDeck.title}
+            </Text>
+            <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+              {currentDeck.questions.length} cards
+            </Text>
 
-        <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.addNewCard}>
-          <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Add Card</Text>
-        </TouchableOpacity>
-        {currentDeck.questions.length > 0 &&
-          <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
-            <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
-          </TouchableOpacity>
-        }
-        {currentDeck.questions.length === 0 &&
-          <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
-            Quiz is not available, please add some cards
-          </Text>
-        }
-      </View>
-    )
+            <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.addNewCard}>
+              <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Add Card</Text>
+            </TouchableOpacity>
+            {currentDeck.questions.length > 0 &&
+              <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
+                <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
+              </TouchableOpacity>
+            }
+            {currentDeck.questions.length === 0 &&
+              <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+                Quiz is not available, please add some cards
+              </Text>
+            }
+          </View>
+          }
+          { currentDeck === null &&
+            <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
+              Deck is not available
+            </Text>
+          }
+        </View>
+      )
   }
 }
 

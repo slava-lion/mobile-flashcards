@@ -18,13 +18,14 @@ class AddNewCard extends React.Component {
   }
 
   onPress = () => {
-    let { addCardToDeck, goBack, deckId } = this.props
+    let { addCardToDeck, goBack, onGoBack, deckId } = this.props
     let card = {}
     card['question'] = this.state.cardQuestion
     card['answer'] = this.state.cardAnswer
     addCardToDeck(card)
     submitNewCard(deckId, card)
     this.setState({ cardQuestion: null, cardAnswer: null, })
+    onGoBack(card)
     goBack()
   }
 
@@ -114,12 +115,13 @@ function mapStateToProps (state, { navigation }) {
 }
 
 function mapDispatchToProps (dispatch, { navigation }) {
-  const { deckId } = navigation.state.params
+  const { deckId, onGoBack } = navigation.state.params
 
   return {
     addCardToDeck: (card) => dispatch(addCardToDeck(deckId, card)),
     // goBack: () => navigation.navigate('DeckDetails', { deckId: deckId }),
     goBack: () => navigation.goBack(),
+    onGoBack: (card) => onGoBack(card),
   }
 }
 
