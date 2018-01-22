@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, View, Text, TextInput, KeyboardAvoidingView, StyleSheet, Platform, TouchableOpacity } from 'react-native'
-import { purple, white } from '../utils/colors'
+import { purple, white, red } from '../utils/colors'
 import { connect } from 'react-redux'
 import { submitDeck } from '../utils/AsyncStorageApi.js'
 import { addDeck } from '../actions/index.js'
@@ -9,19 +9,35 @@ import { CustomStatusBar } from '../utils/helpers'
 export class AddNewDeck extends React.Component {
   state = {
     deckTitle: null,
+    errorMessage: null,
   }
 
   onPress = () => {
     let { navigateToDecks, addDeck } = this.props
     let deckTitle = this.state.deckTitle
-    let key = deckTitle.trim().replace(/\s/g, '')
     let deck = {}
     deck['title'] = deckTitle
     deck['questions'] = []
-    submitDeck(deck, key)
-    addDeck(deck, key)
-    this.setState({ deckTitle: null, })
-    this.navigateToDeck(key)
+    if(this.validateDeck(deck)) {
+      let key = deckTitle.trim().replace(/\s/g, '')
+      submitDeck(deck, key)
+      addDeck(deck, key)
+      this.setState({ deckTitle: null, })
+      this.navigateToDeck(key)
+    }
+  }
+
+  validateDeck(deck) {
+    let errorMessage = ''
+    if(deck.title === null || deck.title.length === 0) {
+      errorMessage = errorMessage + ' deck´s title could not be empty '
+    }
+    if(errorMessage.length > 0) {
+      this.setState({ errorMessage: errorMessage, })
+      return false
+    } else {
+      return true
+    }
   }
 
   navigateToDeck = (deckId) => {
@@ -47,6 +63,9 @@ export class AddNewDeck extends React.Component {
             value={this.state.deckTitle}
             placeholder={placeholder}
           />
+          <Text style={styles.errorMessage}>
+            {this.state.errorMessage}
+          </Text>
           <TouchableOpacity
             style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
             onPress={this.onPress}>
@@ -101,6 +120,16 @@ const styles = StyleSheet.create({
     marginRight: 30,
     marginBottom: 40,
   },
+  errorMessage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 40,
+    fontSize: 20,
+    color: red,
+  }
 })
 
 function mapStateToProps (state) {
