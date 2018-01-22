@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableHighlight, TouchableOpacity, TextInput } from 'react-native'
 import { submitNewCard } from '../utils/AsyncStorageApi.js'
 import { addCardToDeck } from '../actions/index.js'
-import { gray, white, black, purple } from '../utils/colors'
+import { gray, white, black, purple, red } from '../utils/colors'
 
 class AddNewCard extends React.Component {
   navigationOptions = ({ navigation }) => {
@@ -15,18 +15,37 @@ class AddNewCard extends React.Component {
   state = {
     cardQuestion: null,
     cardAnswer: null,
+    errorMessage: null,
   }
 
   onPress = () => {
     let { addCardToDeck, goBack, onGoBack, deckId } = this.props
-    let card = {}
+    const card = {}
     card['question'] = this.state.cardQuestion
     card['answer'] = this.state.cardAnswer
-    addCardToDeck(card)
-    submitNewCard(deckId, card)
-    this.setState({ cardQuestion: null, cardAnswer: null, })
-    onGoBack(card)
-    goBack()
+    if(this.validateCard(card)) {
+      addCardToDeck(card)
+      submitNewCard(deckId, card)
+      this.setState({ cardQuestion: null, cardAnswer: null, })
+      onGoBack(card)
+      goBack()
+    }
+  }
+
+  validateCard(card) {
+    let errorMessage = ''
+    if(card.question === null || card.question.length === 0) {
+      errorMessage = errorMessage + ' question could not be empty '
+    }
+    if(card.answer === null || card.answer.length === 0) {
+      errorMessage = errorMessage + ' answer could not be empty '
+    }
+    if(errorMessage.length > 0) {
+      this.setState({ errorMessage: errorMessage, })
+      return false
+    } else {
+      return true
+    }
   }
 
   render () {
@@ -50,6 +69,9 @@ class AddNewCard extends React.Component {
           value={this.state.cardAnswer}
           placeholder={placeholderCardAnswer}
         />
+        <Text style={styles.errorMessage}>
+          {this.state.errorMessage}
+        </Text>
         <TouchableOpacity
           style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
           onPress={this.onPress}>
@@ -109,6 +131,16 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 30,
+  },
+  errorMessage: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 40,
+    fontSize: 20,
+    color: red,
   }
 })
 
