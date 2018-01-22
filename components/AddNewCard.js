@@ -35,17 +35,17 @@ class AddNewCard extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-        <Text style={[styles.center, {fontSize: 20, }]}>
+        <Text style={styles.center}>
           Add card with new question to the deck {this.props.deckId}
         </Text>
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 30, }}
+          style={styles.textInput}
           onChangeText={(text) => this.setState({ cardQuestion: text, })}
           value={this.state.cardQuestion}
           placeholder={placeholderCardQuestion}
         />
         <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 30, }}
+          style={styles.textInput}
           onChangeText={(text) => this.setState({ cardAnswer: text, })}
           value={this.state.cardAnswer}
           placeholder={placeholderCardAnswer}
@@ -102,7 +102,14 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginRight: 30,
     marginBottom: 40,
+    fontSize: 20,
   },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 30,
+  }
 })
 
 function mapStateToProps (state, { navigation }) {

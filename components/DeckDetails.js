@@ -43,27 +43,28 @@ class DeckDetails extends React.Component {
 
   render() {
     const currentDeck = this.state.deck
+    const { title, questions: { length }} = currentDeck
 
       return (
         <View style={styles.container}>
           { currentDeck !== null &&
             <View style={styles.container}>
             <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
-              {currentDeck.title}
+              {title}
             </Text>
             <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
-              {currentDeck.questions.length} cards
+              {length} cards
             </Text>
 
             <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1 }} onPress={this.addNewCard}>
               <Text style={{margin: 20, textAlign: 'center', color: purple,}}>Add Card</Text>
             </TouchableOpacity>
-            {currentDeck.questions.length > 0 &&
+            {length > 0 &&
               <TouchableOpacity style={{margin: 20, borderColor: black, borderWidth: 1, backgroundColor: black }} onPress={this.startQuiz}>
                 <Text style={{margin: 20, textAlign: 'center', color: white }}>Start Quiz</Text>
               </TouchableOpacity>
             }
-            {currentDeck.questions.length === 0 &&
+            {length === 0 &&
               <Text style={{justifyContent: 'center', textAlign: 'center', margin: 20}}>
                 Quiz is not available, please add some cards
               </Text>
