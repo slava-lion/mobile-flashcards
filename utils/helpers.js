@@ -44,7 +44,7 @@ export function setDummyData() {
   return dummyData
 }
 
-function createNotification () {
+export function createNotification () {
   return {
     title: 'It is time for training!',
     body: 'Please completed at least one quiz',
